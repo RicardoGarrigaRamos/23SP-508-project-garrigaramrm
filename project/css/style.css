@@ -33,3 +33,14 @@ a {
     line-height: 60px;
 }
 
+.home-main{
+	width: fit-content;
+    height: fit-content;
+    justify-content: space-evenly;
+    color: white;
+    padding: 60px 60px;
+     
+}
+
+
+
