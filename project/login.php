@@ -1,19 +1,10 @@
-<html>
-<head>
-<title>HR database</title>
-<?php require_once('header.php'); ?>
-</head>
+<?php 
 
-<?php require_once('connection.php'); ?>
+require_once 'index.php'
 
-<body>
+?>
 
-	<header>
 	
-	</header>
-	
-	
-
 	<main class="container mt-3 mb-3">
 		<form method="post">
 			<div class="row justify-content-center">
