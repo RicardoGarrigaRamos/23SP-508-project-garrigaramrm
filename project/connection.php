@@ -20,6 +20,3 @@ try {
 
 // Start or resume session variables
 session_start();
-
-
-?>
