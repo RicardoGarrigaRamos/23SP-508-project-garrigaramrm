@@ -1,42 +1,51 @@
 <?php 
 
-if(isset($_POST["submit"])){
+if(isset($_POST["submitSignup"])){
     $email = $_POST["email"];
     $username = $_POST["username"];
     $password = $_POST["password"];
     $repetPassword = $_POST["repet-password"];
         
+    require_once ('connection.inc.php');
+    require_once ('functions.inc.php');
+    
         
-    if (emptyInputsSignup($email, $username, $password, $repetPassword)!== false){
+    if (emptyInput($email)!== false){
         header("location: ../signup.php?error=emptyinput");
         exit();
     }
-    if (invalidEmail($email)!== false){
-        header("location: ../signup.php?error=invalidEmail");
+    if (emptyInput($username)!== false){
+        header("location: ../signup.php?error=emptyinput");
         exit();
     }
-    if (invalidUsername($username)!== false){
-        header("location: ../signup.php?error=invalidUsername");
+    if (emptyInput($password)!== false){
+        header("location: ../signup.php?error=emptyinput");
         exit();
     }
-    if (passwordMatch($password, $repetPassword)!== false){
+    if (emptyInput($repetPassword)!== false){
+        header("location: ../signup.php?error=emptyinput");
+        exit();
+    }
+    
+    if (passwordNotMatching($password, $repetPassword)!== false){
         header("location: ../signup.php?error=passwordsDontMatch");
         exit();
     }
-    if (invalidPassword($password)!== false){
-        header("location: ../signup.php?error=invalidPassword");
-        exit();
-    }
+  
     if (passwordLength($password)!== false){
         header("location: ../signup.php?error=passwordIsTooShort");
         exit();
     }
-    if (emailExists($conn, $email)!== false){
-        header("location: ../signup.php?error=emailInUse");
+
+    if (invalidCharacter($email)!== false ||
+        invalidCharacter($username)!== false ||
+        invalidCharacter($password)!== false){
+        header("location: ../signup.php?error=invalidInput");
         exit();
     }
-    if (UsernameExists($conn, $username)!== false){
-        header("location: ../signup.php?error=usernameTaken");
+    
+    if (userExists($conn, $email, $username)!== false){
+        header("location: ../signup.php?error=userExists");
         exit();
     }
     

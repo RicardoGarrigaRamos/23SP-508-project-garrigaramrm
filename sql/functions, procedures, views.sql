@@ -165,6 +165,51 @@ from users join sessions using (session_id)
 where deleted = 0;
 
 
-drop view if exists 
 
 
+
+drop procedure if exists createUser;
+delimiter //
+create procedure createUser
+(p_username varchar(255), p_password varchar(255), p_email varchar(255))
+begin
+
+    declare v_session_id int;
+    insert into sessions 
+    (username, password) values 
+    (p_username, p_password);
+    
+    select session_id into v_session_id
+    from sessions
+    where username = p_username;
+     
+
+    insert into users 
+    (email,session_id,date_of_creation,active,deleted) 
+    values (p_email, v_session_id,
+    curDate(), true, false);
+
+end//
+delimiter ; 
+
+drop procedure if exists createEmployee;
+delimiter //
+CREATE procedure createEmployee
+(p_username varchar(255), p_password varchar(255), p_first_name varchar(255), p_last_name varchar(255),p_email varchar(255),p_dob date,p_sup_id int)
+begin
+	declare v_session_id int;
+    
+    insert into sessions 
+    (username, password) values 
+    (p_username, p_password);
+        
+    select session_id into v_session_id
+    from sessions
+    where username = p_username;
+
+    insert into employees 
+    (first_name, last_name,email, date_of_birth, date_of_hire, supervisor_id, session_id, fired) 
+    values (p_first_name, p_last_name, p_email, p_dob, curDate(), p_sup_id, v_session_id, false);
+
+end//
+delimiter ; 

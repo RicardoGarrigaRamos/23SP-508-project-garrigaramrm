@@ -1,6 +1,6 @@
 <?php
 
-require_once 'index.php'
+require_once 'header.php'
     
 ?>
 <head>
@@ -28,7 +28,7 @@ require_once 'index.php'
 						<input type="password" class="form-control" name="repet-password" placeholder="Confirm password">
 					</div>
 					
-					<button type="submit" name="submit" class="btn btn-primary">Sign up</button>
+					<button type="submit" name="submitSignup" class="btn btn-primary">Sign up</button>
 				</div>
 			</div>
 		</form>
