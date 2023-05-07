@@ -42,7 +42,7 @@ function invalidCharacter($str) {
 
 function userExists($conn, $email, $vusername) {
     
-    $sql = "select session_id, password
+    $sql = "select session_id, username, password, user_id
         from users join sessions using (session_id)
         where username =:vusername or email =:email;";
     $stmt = $conn->prepare($sql);
@@ -68,6 +68,8 @@ function createUser($conn, $email, $vusername, $vpassword) {
     $stmt->bindValue(':vpassword', $hashedPwd);
     $stmt->bindValue(':email', $email);
     $stmt->execute();
+    
+    createSession($conn, $vusername, $vpassword);
     
     header("location: ../index");
     exit();
@@ -112,6 +114,17 @@ function createSession($conn, $name, $vpassword){
     else if($isPWD === true) {
         session_start();
         $_SESSION["session_id"] = $user["session_id"]; 
+        
+        
+        $sql = "select session_is_admin(:session_id)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindValue(':session_id', $user["session_id"]);
+        $stmt->execute();
+        $queryResult = $stmt->fetch();
+        $_SESSION["is_admin"] = $queryResult;
+        $_SESSION["username"] = $user["username"];
+        $_SESSION["user_id"] = $user["user_id"];
+        
         header("location: ../index.php");
         exit();
     }

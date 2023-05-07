@@ -5,11 +5,17 @@
     <link rel="stylesheet" href="css/profile.css">
 </head>
 	
+<body>	
 	<main>
-		<p>This is the profile</p>
+		<p>This is your profile</p>
+		<h2>
+			line 1
+			<br>
+			line 2
+		</h2>
 		
 		<?php 
-		if(isset($_SESSION) === false){
+		if(!isset($_SESSION)){
 		    require('login.php');
 		}
 		?>

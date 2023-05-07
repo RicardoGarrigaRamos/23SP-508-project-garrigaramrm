@@ -176,7 +176,6 @@ Create table subscription_reciepts(
 );
 
 
-insert sessions (username, password) values ('admin','admin');
 insert employees (first_name,last_name,email ,date_of_birth,date_of_hire,supervisor_id, session_id, fired) 
-values ('Ricardo', 'Garriga-Ramos', 'garrigaram@vcu.edu', '2002-09-11', curDate(), null, 1, false);
-insert admins (employee_id) value (1);
+values ('Ricardo', 'Garriga-Ramos', 'garrigaram@vcu.edu', '2002-09-11', curDate(), null, 19, false);
+insert admins (employee_id) value (3);

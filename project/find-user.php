@@ -12,7 +12,7 @@
 <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
 
-<script src="js/advanced-employee.js"></script>
+<script src="js/users.js"></script>
 
 <!-- CSS for datatables buttons -->
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css"/>

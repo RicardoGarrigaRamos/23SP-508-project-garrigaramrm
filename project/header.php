@@ -28,7 +28,10 @@
             	<li><a href="index.php">HOME</a></li>
                 <li><a href="find-user.php">SEARCH</a></li>
                 <?php 
-                    if(isset($_SESSION) and !empty($_SESSION)){
+                    if(isset($_SESSION) and !empty($_SESSION)) {
+                        if($_SESSION["is_admin"]) {
+                            echo "<li><a href='employees.php'>EMPLOYEES</a></li>";
+                        }
                         echo "<li><a href='profile.php'>PROFILE</a></li>
                             <li><a href='includes/logout.inc.php'>LOG OUT</a></li>";
                     }else {

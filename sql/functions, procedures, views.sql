@@ -126,8 +126,11 @@ begin
 declare v_fing_count int;
 
 select count(*) into v_fing_count
-from users join followers using(user_id)
-where user_id = p_user_id;
+from users u left join followers f
+on u.user_id = f.user_id
+where f.user_id = p_user_id;
+
+
 
 return v_fing_count;
 
@@ -145,8 +148,9 @@ begin
 declare v_fer_count int;
 
 select count(*) into v_fer_count
-from creators join followers using(creator_id)
-where creator_id = p_user_id;
+from users u left join followers f
+on u.user_id = f.creator_id
+where f.creator_id = p_user_id;
 
 return v_fer_count;
 
@@ -158,10 +162,11 @@ delimiter ;
 
 drop view if exists user_profile;
 create view user_profile
-(username, email, following, is_active, is_banned)
+(username, email, following,followers, is_active)
 as
-select username, email, get_num_following(user_id), active
-from users join sessions using (session_id)
+select username, email, get_num_following(user_id),get_num_followers(user_id), active
+from users u  inner join sessions s 
+on u.session_id = s.session_id
 where deleted = 0;
 
 
@@ -240,3 +245,5 @@ begin
 
 end//
 delimiter ; 
+
+
