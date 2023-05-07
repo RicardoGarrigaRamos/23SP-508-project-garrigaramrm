@@ -158,7 +158,7 @@ delimiter ;
 
 drop view if exists user_profile;
 create view user_profile
-(username, email, following, is_active)
+(username, email, following, is_active, is_banned)
 as
 select username, email, get_num_following(user_id), active
 from users join sessions using (session_id)
@@ -210,6 +210,33 @@ begin
     insert into employees 
     (first_name, last_name,email, date_of_birth, date_of_hire, supervisor_id, session_id, fired) 
     values (p_first_name, p_last_name, p_email, p_dob, curDate(), p_sup_id, v_session_id, false);
+
+end//
+delimiter ; 
+
+
+
+
+drop function if exists user_is_platform_banned;
+delimiter //
+CREATE function user_is_platform_banned
+(p_username varchar(255))
+returns boolean
+begin
+	declare v_is_banned boolean;
+    declare v_ban_id int;
+    set v_is_banned = false;
+        
+    select user_id into v_ban_id
+    from platform_bans join users using (user_id)
+    join sessions using (session_id)
+    where username = p_username;
+
+    if (v_ban_id is not null) then
+        set v_is_banned = true;
+    end if;
+
+    return v_is_banned;
 
 end//
 delimiter ; 

@@ -30,7 +30,7 @@ function passwordLength($vpassword) {
     return $result;
 }
 
-function validCharacter($str) {
+function invalidCharacter($str) {
     $result = false;
     if (!preg_match("/^[a-zA-Z0-9]*$/", $str))
     {
@@ -42,15 +42,15 @@ function validCharacter($str) {
 
 function userExists($conn, $email, $vusername) {
     
-    $sql = "select session_id
+    $sql = "select session_id, password
         from users join sessions using (session_id)
-        where username = :username or email = :email;";
+        where username =:vusername or email =:email;";
     $stmt = $conn->prepare($sql);
-    $stmt->bindValue(':username', $vusername);
+    $stmt->bindValue(':vusername', $vusername);
     $stmt->bindValue(':email', $email);
     $stmt->execute();
     $queryResult = $stmt->fetch();
-    if (!isset($queryResult)){
+    if (isset($queryResult)){
         return $queryResult;
     }
     
@@ -58,15 +58,14 @@ function userExists($conn, $email, $vusername) {
     
 }
 
-
 function createUser($conn, $email, $vusername, $vpassword) {
     
     $hashedPwd = password_hash($vpassword, PASSWORD_DEFAULT);
     
-    $sql = "call createUser(:username,:password,:email)";
+    $sql = "call createUser(:vusername,:vpassword,:email)";
     $stmt = $conn->prepare($sql);
-    $stmt->bindValue(':username', $vusername);
-    $stmt->bindValue(':password', $hashedPwd);
+    $stmt->bindValue(':vusername', $vusername);
+    $stmt->bindValue(':vpassword', $hashedPwd);
     $stmt->bindValue(':email', $email);
     $stmt->execute();
     
@@ -91,6 +90,32 @@ function createEmployee($conn, $vusername, $vpassword, $firstName, $lastName, $e
     $stmt->bindValue(':supID', $supID);
     $stmt->execute();
     
-    header("location: ../index");
+    header("location: ../signup.php");
     exit();
+}
+
+
+function createSession($conn, $name, $vpassword){
+    $user = userExists($conn, $name, $name);
+    if($user === false) {
+        header("location: ../login.php?error=wrongLogin");
+        exit();
+    }
+    
+    $pwdHashed = $user["password"];
+    $isPWD = password_verify($vpassword, $pwdHashed);
+    
+    if($isPWD === false) {
+        header("location: ../login.php?error=wrongLogin");
+        exit();
+    }
+    else if($isPWD === true) {
+        session_start();
+        $_SESSION["session_id"] = $user["session_id"]; 
+        header("location: ../index.php");
+        exit();
+    }
+    
+    
+    
 }

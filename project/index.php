@@ -10,7 +10,7 @@ require_once 'header.php'
 			Socal Tree: Multi Platform User Creator Hosting
 		</h1>
 		<p>
-			This site inteads to unify your online presence inorder to get your whole feed on just one app.
+			This site inteads to unify your online presence inorder to get your whole feed on just one place.
 		</p>
 	</main>
 

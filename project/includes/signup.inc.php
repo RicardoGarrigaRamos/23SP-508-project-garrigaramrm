@@ -6,12 +6,13 @@ if(isset($_POST["submit"])){
     $vusername = $_POST["vusername"];
     $vpassword = $_POST["vpassword"];
     $repetPassword = $_POST["repet-password"];
+    $conn = $_POST["conn"];
         
-    require_once ('connection.inc.php');
-    require_once ('functions.inc.php');
+    require_once ("connection.inc.php");
+    require_once ("functions.inc.php");
     
         
-    if (emptyInput($email)!== false){
+    if (emptyInput($email) !== false){
         header("location: ../signup.php?error=emptyinput");
         exit();
     }
@@ -37,18 +38,18 @@ if(isset($_POST["submit"])){
         exit();
     }
 
-    if (validCharacter($vusername)!== false ||
-        validCharacter($vpassword)!== false){
+    if (invalidCharacter($vusername)!== false ||
+        invalidCharacter($vpassword)!== false){
         header("location: ../signup.php?error=invalidInput");
         exit();
     }
     
-    if (userExists($conn, $email, $vusername)!== false){
+    if (userExists($conn, $email, $vusername) !== false){
         header("location: ../signup.php?error=userExists");
         exit();
     }
     
-    createUser($conn, $email, $username, $vpassword);
+    createUser($conn, $email, $vusername, $vpassword);
 }
 
 else{

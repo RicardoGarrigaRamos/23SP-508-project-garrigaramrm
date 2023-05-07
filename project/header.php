@@ -1,5 +1,6 @@
-
 <!DOCTYPE html>
+<?php session_start();?>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -26,8 +27,15 @@
             <ul>
             	<li><a href="index.php">HOME</a></li>
                 <li><a href="find-user.php">SEARCH</a></li>
-                <li><a href="login.php">LOGIN</a></li>
-                <li><a href="signup.php">SIGNUP</a></li>
+                <?php 
+                    if(isset($_SESSION) and !empty($_SESSION)){
+                        echo "<li><a href='profile.php'>PROFILE</a></li>
+                            <li><a href='includes/logout.inc.php'>LOG OUT</a></li>";
+                    }else {
+                        echo "<li><a href='login.php'>LOG IN</a></li>
+                            <li><a href='signup.php'>SIGN UP</a></li>";
+                    }
+                ?>
             </ul>
         </nav>
 
