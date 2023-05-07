@@ -10,19 +10,19 @@ function emptyInput($str) {
     return $result;
 }
 
-function passwordNotMatching($password, $repetPassword) {
-    $result = false;
-    if ($password !== $repetPassword)
+function passwordsNotMatching($vpassword, $repetPassword) {
+    $result = true;
+    if ($vpassword == $repetPassword)
     {
-            $result = true;
+            $result = false;
     }
     
     return $result;
 }
 
-function passwordLength($password) {
+function passwordLength($vpassword) {
     $result = false;
-    if ($password.length < 5)
+    if (strlen($vpassword) < 2)
     {
         $result = true;
     }
@@ -30,7 +30,7 @@ function passwordLength($password) {
     return $result;
 }
 
-function invalidCharacter($str) {
+function validCharacter($str) {
     $result = false;
     if (!preg_match("/^[a-zA-Z0-9]*$/", $str))
     {
@@ -40,17 +40,17 @@ function invalidCharacter($str) {
     return $result;
 }
 
-function userExists($conn, $email, $username) {
+function userExists($conn, $email, $vusername) {
     
     $sql = "select session_id
         from users join sessions using (session_id)
-        where username = :username and email = :email;";
-    $stmt = $conn->prepare($sqlQuery);
-    $stmt->bindValue(':username', $username);
+        where username = :username or email = :email;";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindValue(':username', $vusername);
     $stmt->bindValue(':email', $email);
     $stmt->execute();
     $queryResult = $stmt->fetch();
-    if (!empty($queryResult)){
+    if (!isset($queryResult)){
         return $queryResult;
     }
     
@@ -59,38 +59,38 @@ function userExists($conn, $email, $username) {
 }
 
 
-function createUser($conn, $email, $username, $password) {
+function createUser($conn, $email, $vusername, $vpassword) {
+    
+    $hashedPwd = password_hash($vpassword, PASSWORD_DEFAULT);
+    
     $sql = "call createUser(:username,:password,:email)";
-    $stmt = $conn->prepare($sqlQuery);
-    $stmt->bindValue(':username', $username);
-    $stmt->bindValue(':password', $password);
+    $stmt = $conn->prepare($sql);
+    $stmt->bindValue(':username', $vusername);
+    $stmt->bindValue(':password', $hashedPwd);
     $stmt->bindValue(':email', $email);
     $stmt->execute();
-    $queryResult = $stmt->fetch();
-    if (!empty($queryResult)){
-        return $queryResult;
-    }
     
-    return false; 
+    header("location: ../index");
+    exit();
+    
 }
 
 
-function createEmployee($conn, $username, $password, $firstName, $lastName, $email, $dob, $supID) {
+function createEmployee($conn, $vusername, $vpassword, $firstName, $lastName, $email, $dob, $supID) {
+    
+    $hashedPwd = password_hash($vpassword, PASSWORD_DEFAULT);
+    
     $sql = "call createEmployee(:username,:password,:firstName, :lastName, :email, :dob, :supID)";
-    $stmt = $conn->prepare($sqlQuery);
-    $stmt->bindValue(':username', $username);
-    $stmt->bindValue(':password', $password);
+    $stmt = $conn->prepare($sql);
+    $stmt->bindValue(':username', $vusername);
+    $stmt->bindValue(':password', $hashedPwd);
     $stmt->bindValue(':firstName', $firstName);
     $stmt->bindValue(':lastName', $lastName);
     $stmt->bindValue(':email', $email);
     $stmt->bindValue(':dob', $dob);
     $stmt->bindValue(':supID', $supID);
-
     $stmt->execute();
-    $queryResult = $stmt->fetch();
-    if (!empty($queryResult)){
-        return $queryResult;
-    }
     
-    return false;
+    header("location: ../index");
+    exit();
 }

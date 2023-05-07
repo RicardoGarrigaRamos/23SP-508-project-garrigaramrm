@@ -17,21 +17,45 @@ require_once 'header.php'
 					</div>
 					<div class="form-group">
 						<label>Username:</label>
-						<input type="text" class="form-control" name="username" placeholder="Enter username" >
+						<input type="text" class="form-control" name="vusername" placeholder="Enter username" >
 					</div>
 					<div class="form-group">
 						<label>Password:</label>
-						<input type="password" class="form-control" name="password" placeholder="Enter password">
+						<input type="password" class="form-control" name="vpassword" placeholder="Enter password">
 					</div>
 					<div class="form-group">
 						<label>Repet Password:</label>
 						<input type="password" class="form-control" name="repet-password" placeholder="Confirm password">
 					</div>
-					
-					<button type="submit" name="submitSignup" class="btn btn-primary">Sign up</button>
+					<button type="submit" name="submit" class="btn btn-primary">Sign up</button>
 				</div>
 			</div>
 		</form>
+	<div>
+	<?php 
+	if(isst($_GET["error"])) {
+	    if($_GET["error"] == "emptyinput"){
+	        echo "<p>A field is still empty</p>";
+	    }
+	    if($_GET["error"] == "passwordsDontMatch"){
+	        echo "<p>Passwords did not match</p>";
+	    }
+	    if($_GET["error"] == "passwordIsTooShort"){
+	        echo "<p>Password was too short</p>";
+	    }
+	    if($_GET["error"] == "invalidInput"){
+	        echo "<p>A field used illigal characters</p>";
+	    }
+	    if($_GET["error"] == "userExists"){
+	        echo "<p>This user already exists</p>";
+	    }
+	    if($_GET["error"] == "none"){
+	        echo "<p>You are signed in</p>";
+	    }
+	}
+	?>
+	</div>	
+	
 	</main>
 
 </body>

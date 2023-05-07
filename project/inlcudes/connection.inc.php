@@ -8,7 +8,7 @@ ini_set('display_errors', 1);
 $servername = "cmsc508.com";
 $username = "23SP_garrigaramrm";
 $password = "23SP_garrigaramrm";
-$database = "23SP_garrigaramrm_hr";
+$database = "23SP_garrigaramrm_pr";
 
 try {
     // Establish a connection with the MySQL server
