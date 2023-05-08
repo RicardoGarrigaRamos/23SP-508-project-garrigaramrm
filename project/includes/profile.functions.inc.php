@@ -2,7 +2,7 @@
 function getUserInfo() {
     $conn = $_POST["conn"];
     
-    $sql = "select 
+    $sql = "select *
             from user_profile
             where username = :username;";
     $stmt = $conn->prepare($sql);
